@@ -47,11 +47,11 @@ Obviously:
 - the operator has to be one of the allowed as well 
 
 Allowed types are:
-- string
-- number
-- boolean 
-- expression
-- field
+- `string`
+- `number`
+- `boolean `
+- `expression`
+- `field`
 
 An `expression` is simply another node to compare, the value is thus the object you want to evaluate.
 
@@ -105,7 +105,7 @@ This will produce an error
 },
 "operator": "=="
 ```
-This will produce (bool) false
+This will produce `false`
 
 ### Type and value have to match
 
@@ -154,5 +154,5 @@ This will produce (bool) false
 }
 ````
 This will produce (bool) false because:
-- "olivier" == "arnaud" is false
-- true && false is false
+- `"olivier" == "arnaud"` is `false`
+- `true && false` is `false`
