@@ -1,4 +1,4 @@
-import evaluate from '../evaluate';
+import lib from '../index';
 
 [{
   instance: {
@@ -114,7 +114,7 @@ import evaluate from '../evaluate';
   expected: true,
 }].forEach((testCase) => {
   test('Evaluate basic', () => {
-    expect(evaluate(testCase.instance)).toEqual(testCase.expected);
+    expect(lib.evaluate(testCase.instance)).toEqual(testCase.expected);
   });
 });
 
@@ -140,7 +140,7 @@ test('Evaluate with expression', () => {
     },
     operator: '&&',
   };
-  expect(evaluate(instance)).toEqual(false);
+  expect(lib.evaluate(instance)).toEqual(false);
 });
 
 test('Evaluate with expression 2', () => {
@@ -175,5 +175,5 @@ test('Evaluate with expression 2', () => {
     },
     operator: '==',
   };
-  expect(evaluate(instance)).toEqual(true);
+  expect(lib.evaluate(instance)).toEqual(true);
 });

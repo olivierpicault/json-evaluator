@@ -7,6 +7,7 @@
     "url": "https://github.com/olivierpicault/json-evaluator",
     "type": "git"
   },
+  "main": "index.js",
   "author": "Olivier Picault <olivier.picault@gmail.com>",
   "bugs": "https://github.com/olivierpicault/json-evaluator/issues",
   "babel": {

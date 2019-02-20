@@ -4,6 +4,16 @@ The aim of the json is to produce a boolean
 
 ## Installation
 
+### Yarn
+```
+yarn add json-evaluator
+```
+
+### NPM
+```
+npm i json-evaluator
+```
+
 ## Usage
 
 ## How does the json work ?
