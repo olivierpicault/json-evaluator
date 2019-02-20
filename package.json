@@ -1,0 +1,30 @@
+{
+  "name": "json-evaluator",
+  "version": "1.0.0",
+  "keywords": ["json", "valuator", "compute"],
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/olivierpicault/json-evaluator",
+    "type": "git"
+  },
+  "author": "Olivier Picault <olivier.picault@gmail.com>",
+  "bugs": "https://github.com/olivierpicault/json-evaluator/issues",
+  "babel": {
+    "presets": [
+      "@babel/env"
+    ],
+    "plugins": [
+      "transform-object-rest-spread"
+    ]
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.3.1",
+    "jest-cli": "^24.1.0"
+  }
+}
