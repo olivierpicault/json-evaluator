@@ -16,7 +16,23 @@ npm i json-evaluator
 
 ## Usage
 
-## How does the json work ?
+### Import the package
+```
+import evaluator from 'json-evaluator'
+```
+
+### Validate the JSON instance
+```
+evaluator.validator.validate(instance, {})
+```
+- `instance` is a JSON object
+
+### Evaluate the JSON instance
+```
+jsonEvaluator.evaluate(JSON.parse(instance), {})
+```
+
+## How does the JSON work ?
 
 The json needs 3 properties:
 - a value to compare
