@@ -97,13 +97,13 @@ They obviously can't be applied to all types.
   "compare": {
     "type": "string",
     "value": "olivier"
-},
-{
+  },
   "compareTo": {
     "type": "string",
     "value": "arnaud"
-},
-"operator": ">="
+  },
+  "operator": ">="
+}
 ```
 This will produce an error
 
@@ -113,13 +113,13 @@ This will produce an error
   "compare": {
     "type": "string",
     "value": "olivier"
-},
-{
+  },
   "compareTo": {
     "type": "string",
     "value": "arnaud"
-},
-"operator": "=="
+  },
+  "operator": "=="
+}
 ```
 This will produce `false`
 
@@ -131,6 +131,7 @@ This will produce `false`
   "compare": {
     "type": "string",
     "value": 14
+  }
 }
 ```
 
