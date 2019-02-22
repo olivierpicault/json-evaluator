@@ -1,4 +1,4 @@
 module.exports = {
-  validator: require('./lib/validate'),
-  evaluate: require('./lib/evaluate')
+  validator: require('./dist/validate'),
+  evaluate: require('./dist/evaluate')
 }
