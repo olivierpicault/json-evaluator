@@ -1,4 +1,4 @@
-import lib from '../index'
+import validator from '../lib/validate'
 
 /*
 **  PROPERTIES
@@ -31,7 +31,7 @@ import lib from '../index'
   result: false,
 }].forEach((testCase) => {
   test('validateProperties OK', () => {
-    expect(lib.validator.validateProperties(testCase.node).valid).toEqual(testCase.result);
+    expect(validator.validateProperties(testCase.node).valid).toEqual(testCase.result);
   });
 });
 
@@ -75,7 +75,7 @@ import lib from '../index'
   result: false,
 }].forEach((testCase) => {
   test('validatePropertiesProperties', () => {
-    expect(lib.validator.validatePropertiesProperties(testCase.node).valid).toEqual(testCase.result);
+    expect(validator.validatePropertiesProperties(testCase.node).valid).toEqual(testCase.result);
   });
 });
 
@@ -95,7 +95,7 @@ test('validateTypes OK', () => {
     },
     operator: '==',
   };
-  expect(lib.validator.validateTypes(node).valid).toBe(true);
+  expect(validator.validateTypes(node).valid).toBe(true);
 });
 
 test('validateTypes KO', () => {
@@ -110,7 +110,7 @@ test('validateTypes KO', () => {
     },
     operator: '==',
   };
-  expect(lib.validator.validateTypes(node).valid).toBe(false);
+  expect(validator.validateTypes(node).valid).toBe(false);
 });
 
 /*
@@ -148,7 +148,7 @@ test('validateTypes KO', () => {
       },
       operator: '==',
     };
-    expect(lib.validator.validateComparison(node).valid).toBe(testCase.result);
+    expect(validator.validateComparison(node).valid).toBe(testCase.result);
   });
 });
 
@@ -188,7 +188,7 @@ test('validateTypes KO', () => {
       },
       operator: '>=',
     };
-    expect(lib.validator.validateValue(node, {}).valid).toBe(testCase.expected);
+    expect(validator.validateValue(node, {}).valid).toBe(testCase.expected);
   });
 });
 
@@ -207,7 +207,7 @@ test('ValidateValueWithFields KO', () => {
   const fields = {
     user: 'oliver',
   };
-  expect(lib.validator.validateValue(node, fields).valid).toBe(false);
+  expect(validator.validateValue(node, fields).valid).toBe(false);
 });
 
 test('ValidateValueWithFields KO', () => {
@@ -225,7 +225,7 @@ test('ValidateValueWithFields KO', () => {
   const fields = {
     user: 'oliver',
   };
-  expect(lib.validator.validateValue(node, fields).valid).toBe(false);
+  expect(validator.validateValue(node, fields).valid).toBe(false);
 });
 
 test('ValidateValueWithFields OK', () => {
@@ -243,7 +243,7 @@ test('ValidateValueWithFields OK', () => {
   const fields = {
     username: 'oliver',
   };
-  expect(lib.validator.validateValue(node, fields).valid).toBe(true);
+  expect(validator.validateValue(node, fields).valid).toBe(true);
 });
 
 /*
@@ -264,7 +264,7 @@ test('ValidateValueWithFields OK', () => {
       },
       operator,
     };
-    expect(lib.validator.validateOperator(node).valid).toBe(true);
+    expect(validator.validateOperator(node).valid).toBe(true);
   });
 });
 
@@ -282,7 +282,7 @@ test('ValidateValueWithFields OK', () => {
       },
       operator,
     };
-    expect(lib.validator.validateOperator(node).valid).toBe(false);
+    expect(validator.validateOperator(node).valid).toBe(false);
   });
 });
 
@@ -300,7 +300,7 @@ test('ValidateValueWithFields OK', () => {
       },
       operator,
     };
-    expect(lib.validator.validateOperator(node).valid).toBe(true);
+    expect(validator.validateOperator(node).valid).toBe(true);
   });
 });
 
@@ -318,7 +318,7 @@ test('ValidateValueWithFields OK', () => {
       },
       operator,
     };
-    expect(lib.validator.validateOperator(node).valid).toBe(false);
+    expect(validator.validateOperator(node).valid).toBe(false);
   });
 });
 
@@ -337,7 +337,7 @@ test('ValidateValueWithFields OK', () => {
         },
         operator,
       };
-      expect(lib.validator.validateOperator(node).valid).toBe(true);
+      expect(validator.validateOperator(node).valid).toBe(true);
     });
   });
 });
@@ -357,7 +357,7 @@ test('ValidateValueWithFields OK', () => {
         },
         operator,
       };
-      expect(lib.validator.validateOperator(node).valid).toBe(false);
+      expect(validator.validateOperator(node).valid).toBe(false);
     });
   });
 });
@@ -383,7 +383,7 @@ test('ValidateValueWithFields OK', () => {
       },
       operator: testCase.operator,
     };
-    expect(lib.validator.validateOperator(node).valid).toEqual(testCase.expected);
+    expect(validator.validateOperator(node).valid).toEqual(testCase.expected);
   });
 });
 
@@ -404,7 +404,7 @@ test('ValidateNode', () => {
     },
     operator: '==',
   };
-  expect(lib.validator.validateNode(node)).toEqual({ valid: true, errors: [] });
+  expect(validator.validateNode(node)).toEqual({ valid: true, errors: [] });
 });
 
 test('ValidateNode 2', () => {
@@ -419,7 +419,7 @@ test('ValidateNode 2', () => {
     },
     operator: '==',
   };
-  const result = lib.validator.validateNode(node);
+  const result = validator.validateNode(node);
   expect(result.valid).toBe(false);
   expect(result.errors.length).toBeGreaterThan(0);
 });
@@ -446,7 +446,7 @@ test('Validate', () => {
     },
     operator: '==',
   };
-  const result = lib.validator.validate(node);
+  const result = validator.validate(node);
   expect(result.valid).toBe(true);
   expect(result.errors.length).toStrictEqual(0);
 });
@@ -473,7 +473,7 @@ test('Validate', () => {
     },
     operator: '==',
   };
-  const result = lib.validator.validate(node);
+  const result = validator.validate(node);
   expect(result.valid).toEqual(false);
   expect(result.errors.length).toBeGreaterThan(0);
 });

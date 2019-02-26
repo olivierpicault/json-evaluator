@@ -1,13 +1,45 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
+}
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
+}
 
 var allowedTypes = ['string', 'number', 'boolean', 'expression', 'field'];
-
 module.exports = {
-
   /*
   **  Check object has all the needed properties
   */
@@ -38,7 +70,10 @@ module.exports = {
       valid = false;
     }
 
-    return { valid: valid, errors: errors };
+    return {
+      valid: valid,
+      errors: errors
+    };
   },
 
   /*
@@ -47,17 +82,18 @@ module.exports = {
   validatePropertiesProperties: function validatePropertiesProperties(node) {
     var errors = [];
     var valid = true;
-
     ['compare', 'compareTo'].forEach(function (prop) {
       ['type', 'value'].forEach(function (propProp) {
         if (!Object.prototype.hasOwnProperty.call(node[prop], propProp)) {
           valid = false;
-          errors.push('"' + propProp + '" property is missing from "' + prop + '"');
+          errors.push("\"".concat(propProp, "\" property is missing from \"").concat(prop, "\""));
         }
       });
     });
-
-    return { valid: valid, errors: errors };
+    return {
+      valid: valid,
+      errors: errors
+    };
   },
 
   /*
@@ -69,10 +105,13 @@ module.exports = {
 
     if (!(allowedTypes.includes(node.compare.type) && allowedTypes.includes(node.compareTo.type))) {
       valid = false;
-      errors.push('"type" must be one of ' + allowedTypes.join(', '));
+      errors.push("\"type\" must be one of ".concat(allowedTypes.join(', ')));
     }
 
-    return { valid: valid, errors: errors };
+    return {
+      valid: valid,
+      errors: errors
+    };
   },
 
   /*
@@ -80,32 +119,37 @@ module.exports = {
   */
   validateComparison: function validateComparison(node) {
     var errors = [];
-    var valid = true;
-
-    // Wildcard for 'field'
+    var valid = true; // Wildcard for 'field'
     // 'field' can be any type and we don't know it in advance
-    if (node.compare.type === 'field' || node.compareTo.type === 'field') {
-      return { valid: true, errors: [] };
-    }
 
-    // 'Expression' can only be compare to a boolean or another 'expression'
+    if (node.compare.type === 'field' || node.compareTo.type === 'field') {
+      return {
+        valid: true,
+        errors: []
+      };
+    } // 'Expression' can only be compare to a boolean or another 'expression'
+
+
     if (node.compare.type === 'expression' || node.compareTo.type === 'expression') {
       if (node.compare.type === 'expression' && !['expression', 'boolean'].includes(node.compareTo.type)) {
         errors.push('"expression" type can only be compared to "boolean" or "expression" types');
         valid = false;
       }
+
       if (node.compareTo.type === 'expression' && !['expression', 'boolean'].includes(node.compare.type)) {
         errors.push('"expression" type can only be compared to "boolean" or "expression" types');
         valid = false;
       }
-    }
-    // Besides 'expression' case all other types should be compare to the same type
+    } // Besides 'expression' case all other types should be compare to the same type
     else if (node.compare.type !== node.compareTo.type) {
         errors.push('You are not comparing the same types for "compare" and "compareTo"');
         valid = false;
       }
 
-    return { valid: valid, errors: errors };
+    return {
+      valid: valid,
+      errors: errors
+    };
   },
 
   /*
@@ -114,43 +158,46 @@ module.exports = {
   validateValue: function validateValue(node, fields) {
     var errors = [];
     var valid = true;
-
     var compareType = node.compare.type;
     var compareToType = node.compareTo.type;
+    var specialTypes = ['expression', 'field']; // Basic cases
 
-    var specialTypes = ['expression', 'field'];
-
-    // Basic cases
     if (!specialTypes.includes(compareType) && allowedTypes.includes(compareType) && _typeof(node.compare.value) !== compareType) {
       valid = false;
-      errors.push('"' + node.compare.value + '" is not "' + compareType + '"');
+      errors.push("\"".concat(node.compare.value, "\" is not \"").concat(compareType, "\""));
     }
+
     if (!specialTypes.includes(compareToType) && allowedTypes.includes(compareToType) && _typeof(node.compareTo.value) !== compareToType) {
       valid = false;
-      errors.push('"' + node.compareTo.value + '" is not "' + compareToType + '"');
-    }
+      errors.push("\"".concat(node.compareTo.value, "\" is not \"").concat(compareToType, "\""));
+    } // Special cases: expression
 
-    // Special cases: expression
+
     if (compareType === 'expression' && _typeof(node.compare.value) !== 'object') {
       valid = false;
-      errors.push('"' + node.compare.value + '" is not "' + compareType + '"');
+      errors.push("\"".concat(node.compare.value, "\" is not \"").concat(compareType, "\""));
     }
+
     if (compareToType === 'expression' && _typeof(node.compareTo.value) !== 'object') {
       valid = false;
-      errors.push('"' + node.compareTo.value + '" is not "' + compareToType + '"');
-    }
+      errors.push("\"".concat(node.compareTo.value, "\" is not \"").concat(compareToType, "\""));
+    } // // Special cases: field
 
-    // // Special cases: field
+
     if (compareType === 'field' && !Object.prototype.hasOwnProperty.call(fields, node.compare.value)) {
       valid = false;
-      errors.push('"' + node.compare.value + '" is not a valid field value');
-    }
-    if (compareToType === 'field' && !Object.prototype.hasOwnProperty.call(fields, node.compareTo.value)) {
-      valid = false;
-      errors.push('"' + node.compareTo.value + '" is not a valid field value');
+      errors.push("\"".concat(node.compare.value, "\" is not a valid field value"));
     }
 
-    return { valid: valid, errors: errors };
+    if (compareToType === 'field' && !Object.prototype.hasOwnProperty.call(fields, node.compareTo.value)) {
+      valid = false;
+      errors.push("\"".concat(node.compareTo.value, "\" is not a valid field value"));
+    }
+
+    return {
+      valid: valid,
+      errors: errors
+    };
   },
 
   /*
@@ -161,31 +208,33 @@ module.exports = {
 
     var errors = [];
     var valid = true;
-
     var type = node.compare.type;
     var toType = node.compareTo.type;
-
     var allowedOperatorsByType = {
       string: ['==', '!='],
       number: ['==', '!=', '>', '>=', '<', '<='],
       boolean: ['==', '!=', '&&', '||', 'and', 'or'],
       expression: ['==', '!=', '&&', '||', 'and', 'or'],
-      field: []
+      field: [] // "flatten" all the arrays within 'allowedOperatorsByType' ...
 
-      // "flatten" all the arrays within 'allowedOperatorsByType' ...
-    };var operators = (_ref = []).concat.apply(_ref, _toConsumableArray(Object.values(allowedOperatorsByType)));
-    // ... and remove duplicates
+    };
+
+    var operators = (_ref = []).concat.apply(_ref, _toConsumableArray(Object.values(allowedOperatorsByType))); // ... and remove duplicates
+
+
     operators = operators.filter(function (element, index, self) {
       return index === self.indexOf(element);
-    });
+    }); // Wildcard
 
-    // Wildcard
     if (type === 'field' && toType === 'field' && operators.includes(node.operator)) {
-      return { valid: true, errors: [] };
-    }
-
-    // Validation based on the type that is not 'field'
+      return {
+        valid: true,
+        errors: []
+      };
+    } // Validation based on the type that is not 'field'
     // (You can not imagine how the following lines are actually pure art)
+
+
     if (type === 'field' && toType !== 'field' && Object.keys(allowedOperatorsByType).includes(toType)) {
       allowedOperatorsByType.field = allowedOperatorsByType[toType];
     } else if (type !== 'field' && toType === 'field' && Object.keys(allowedOperatorsByType).includes(type)) {
@@ -193,17 +242,22 @@ module.exports = {
     }
 
     if (type === undefined || type === null || type === '' || !(type in allowedOperatorsByType)) {
-      return { valid: false, errors: ['Type "' + type + '" is not defined in the validator'] };
+      return {
+        valid: false,
+        errors: ["Type \"".concat(type, "\" is not defined in the validator")]
+      };
     }
 
     if (!allowedOperatorsByType[type].includes(node.operator)) {
-      errors.push('operator "' + node.operator + '" can not be applied here');
+      errors.push("operator \"".concat(node.operator, "\" can not be applied here"));
       valid = false;
     }
 
-    return { valid: valid, errors: errors };
+    return {
+      valid: valid,
+      errors: errors
+    };
   },
-
   validateNode: function validateNode(node, fields) {
     var props = this.validateProperties(node);
 
@@ -216,21 +270,21 @@ module.exports = {
     var compare = this.validateComparison(node);
     var operator = this.validateOperator(node);
     var value = this.validateValue(node, fields);
-
     return {
       valid: props.valid && propsPros.valid && types.valid && compare.valid && operator.valid && value.valid,
       errors: [].concat(_toConsumableArray(props.errors), _toConsumableArray(propsPros.errors), _toConsumableArray(types.errors), _toConsumableArray(compare.errors), _toConsumableArray(operator.errors), _toConsumableArray(value.errors))
     };
   },
-
   validate: function validate(instance, fields) {
     var valid = true;
     var errors = [];
-
     var currentNode = this.validateNode(instance, fields);
 
     if (!currentNode.valid) {
-      return { valid: currentNode.valid && valid, errors: [].concat(_toConsumableArray(currentNode.errors), _toConsumableArray(errors)) };
+      return {
+        valid: currentNode.valid && valid,
+        errors: [].concat(_toConsumableArray(currentNode.errors), _toConsumableArray(errors))
+      };
     }
 
     if (instance.compare.type === 'expression') {
@@ -241,10 +295,14 @@ module.exports = {
 
     if (instance.compareTo.type === 'expression') {
       var _nodeValidation = this.validate(instance.compareTo.value, fields);
+
       valid = valid && _nodeValidation.valid;
       errors = [].concat(_toConsumableArray(errors), _toConsumableArray(_nodeValidation.errors));
     }
 
-    return { valid: currentNode.valid && valid, errors: [].concat(_toConsumableArray(currentNode.errors), _toConsumableArray(errors)) };
+    return {
+      valid: currentNode.valid && valid,
+      errors: [].concat(_toConsumableArray(currentNode.errors), _toConsumableArray(errors))
+    };
   }
 };

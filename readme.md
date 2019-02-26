@@ -173,3 +173,17 @@ This will produce `false`
 This will produce (bool) false because:
 - `"olivier" == "arnaud"` is `false`
 - `true && false` is `false`
+
+## Misc
+
+# Run de tests
+
+```
+yarn tests tests/
+```
+
+## Generate `dist` files
+
+```
+./node_modules/.bin/babel lib/ --out-dir dist/
+```
