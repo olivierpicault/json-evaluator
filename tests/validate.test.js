@@ -1,7 +1,7 @@
 import validator from '../lib/validate'
 
 /*
-**  PROPERTIES
+**  Properties - Single
 */
 
 [{
@@ -30,9 +30,29 @@ import validator from '../lib/validate'
   },
   result: false,
 }].forEach((testCase) => {
-  test('validateProperties OK', () => {
+  test('validate single properties', () => {
     expect(validator.validateProperties(testCase.node).valid).toEqual(testCase.result);
   });
+});
+
+/*
+**  Properties - Multiple
+*/
+
+[
+  { node: { conditions: [], operator: 'and' }, expected: true },
+  { node: { conditions: {}, operator: 'and' }, expected: false },
+  { node: { conditions: '', operator: 'and' }, expected: false },
+  { node: { conditions: [], operator: 'or' }, expected: true },
+  { node: { conditions: [], operator: 'OR' }, expected: true },
+  { node: { conditions: [], operator: 'AND' }, expected: true },
+  { node: { conditions: [], operator: '&&' }, expected: true },
+  { node: { conditions: [], operator: '||' }, expected: true },
+  { node: { conditions: 'hello', operator: 'hola' }, expected: false },
+].forEach((testCase) => {
+  test('validate multiple properties', () => {
+    expect(validator.validateMultipleProperties(testCase.node).valid).toEqual(testCase.expected);
+  })
 });
 
 /*

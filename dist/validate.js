@@ -1,45 +1,33 @@
 'use strict';
 
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
-function _toConsumableArray(arr) {
-  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
-}
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance");
-}
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-function _iterableToArray(iter) {
-  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
-}
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  }
-}
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var allowedTypes = ['string', 'number', 'boolean', 'expression', 'field'];
+var allowedMultipleOperators = ['and', 'or', '||', '&&'];
 module.exports = {
+  /*
+  **
+  */
+  checkOperationType: function checkOperationType(node) {
+    var type = undefined;
+
+    if (Object.prototype.hasOwnProperty.call(node, 'operator') && Object.prototype.hasOwnProperty.call(node, 'conditions')) {
+      type = 'multiple';
+    } else if (Object.prototype.hasOwnProperty.call(node, 'operator') && !Object.prototype.hasOwnProperty.call(node, 'conditions')) {
+      type = 'single';
+    }
+
+    return type;
+  },
+
   /*
   **  Check object has all the needed properties
   */
@@ -68,6 +56,31 @@ module.exports = {
     } else if (typeof node.operator !== 'string') {
       errors.push('"operator" must be a string');
       valid = false;
+    }
+
+    return {
+      valid: valid,
+      errors: errors
+    };
+  },
+  validateMultipleProperties: function validateMultipleProperties(node) {
+    var errors = [];
+    var valid = true;
+
+    if (!Object.prototype.hasOwnProperty.call(node, 'conditions')) {
+      valid = false;
+      errors.push('"conditions" property is missing');
+    } else if (!Array.isArray(node.conditions)) {
+      valid = false;
+      errors.push('"conditions" must be an array');
+    }
+
+    if (!Object.prototype.hasOwnProperty.call(node, 'operator')) {
+      valid = false;
+      errors.push('"operator" property is missing');
+    } else if (!allowedMultipleOperators.includes(node.operator.toLowerCase())) {
+      valid = false;
+      errors.push("\"operator\" must be one of ".concat(allowedMultipleOperators.join(', ')));
     }
 
     return {
@@ -278,31 +291,50 @@ module.exports = {
   validate: function validate(instance, fields) {
     var valid = true;
     var errors = [];
-    var currentNode = this.validateNode(instance, fields);
+    var operationType = this.checkOperationType(instance);
 
-    if (!currentNode.valid) {
+    if (operationType === undefined) {
+      valid = false;
+      errors.push('"operation type can not be determined');
+    }
+
+    if (operationType === 'single') {
+      var currentNode = this.validateNode(instance, fields);
+
+      if (currentNode.valid === false) {
+        return {
+          valid: currentNode.valid && valid,
+          errors: [].concat(_toConsumableArray(currentNode.errors), _toConsumableArray(errors))
+        };
+      }
+
+      if (instance.compare.type === 'expression') {
+        var nodeValidation = this.validate(instance.compare.value, fields);
+        valid = valid && nodeValidation.valid;
+        errors = [].concat(_toConsumableArray(errors), _toConsumableArray(nodeValidation.errors));
+      }
+
+      if (instance.compareTo.type === 'expression') {
+        var _nodeValidation = this.validate(instance.compareTo.value, fields);
+
+        valid = valid && _nodeValidation.valid;
+        errors = [].concat(_toConsumableArray(errors), _toConsumableArray(_nodeValidation.errors));
+      }
+
       return {
         valid: currentNode.valid && valid,
         errors: [].concat(_toConsumableArray(currentNode.errors), _toConsumableArray(errors))
       };
     }
 
-    if (instance.compare.type === 'expression') {
-      var nodeValidation = this.validate(instance.compare.value, fields);
-      valid = valid && nodeValidation.valid;
-      errors = [].concat(_toConsumableArray(errors), _toConsumableArray(nodeValidation.errors));
-    }
-
-    if (instance.compareTo.type === 'expression') {
-      var _nodeValidation = this.validate(instance.compareTo.value, fields);
-
-      valid = valid && _nodeValidation.valid;
-      errors = [].concat(_toConsumableArray(errors), _toConsumableArray(_nodeValidation.errors));
+    if (operationType === 'multiple') {// Check operator
+      // check conditions is an array
+      // check each item of conditions is an object with certain properties
     }
 
     return {
-      valid: currentNode.valid && valid,
-      errors: [].concat(_toConsumableArray(currentNode.errors), _toConsumableArray(errors))
+      valid: valid,
+      errors: errors
     };
   }
 };
