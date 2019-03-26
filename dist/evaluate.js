@@ -33,11 +33,11 @@ module.exports = {
     }
 
     if (instance.compare.type === 'field') {
-      compare = fields[instance.compare.value];
+      compare = fields[compare];
     }
 
     if (instance.compareTo.type === 'field') {
-      compareTo = fields[instance.compareTo.value];
+      compareTo = fields[compareTo];
     }
 
     var operator = instance.operator.toLowerCase();

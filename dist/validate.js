@@ -183,7 +183,7 @@ module.exports = {
     if (!specialTypes.includes(compareToType) && allowedTypes.includes(compareToType) && _typeof(node.compareTo.value) !== compareToType) {
       valid = false;
       errors.push("\"".concat(node.compareTo.value, "\" is not \"").concat(compareToType, "\""));
-    } // Special cases: expression
+    } // Special case: expression
 
 
     if (compareType === 'expression' && _typeof(node.compare.value) !== 'object') {
@@ -194,15 +194,15 @@ module.exports = {
     if (compareToType === 'expression' && _typeof(node.compareTo.value) !== 'object') {
       valid = false;
       errors.push("\"".concat(node.compareTo.value, "\" is not \"").concat(compareToType, "\""));
-    } // // Special cases: field
+    } // Special case: field
 
 
-    if (compareType === 'field' && !Object.prototype.hasOwnProperty.call(fields, node.compare.value)) {
+    if (compareType === 'field' && Object.prototype.hasOwnProperty.call(fields, node.compare.value) === false) {
       valid = false;
       errors.push("\"".concat(node.compare.value, "\" is not a valid field value"));
     }
 
-    if (compareToType === 'field' && !Object.prototype.hasOwnProperty.call(fields, node.compareTo.value)) {
+    if (compareToType === 'field' && Object.prototype.hasOwnProperty.call(fields, node.compareTo.value) === false) {
       valid = false;
       errors.push("\"".concat(node.compareTo.value, "\" is not a valid field value"));
     }

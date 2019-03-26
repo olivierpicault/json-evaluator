@@ -266,6 +266,43 @@ test('ValidateValueWithFields KO', () => {
   expect(validator.validateValue(node, fields).valid).toEqual(false);
 });
 
+test('ValidateValueWithFields KO', () => {
+  const node = {
+    compare: {
+      type: 'string',
+      value: null,
+    },
+    compareTo: {
+      type: 'field',
+      value: null,
+    },
+    operator: '==',
+  };
+  const fields = {
+    user: 'oliver',
+  };
+  expect(validator.validateValue(node, fields).valid).toEqual(false);
+  console.log(validator.validateValue(node, fields))
+});
+
+test('ValidateValueWithFields KO', () => {
+  const node = {
+    compare: {
+      type: 'string',
+      value: 'hello',
+    },
+    compareTo: {
+      type: 'field',
+      value: undefined,
+    },
+    operator: '==',
+  };
+  const fields = {
+    user: 'oliver',
+  };
+  expect(validator.validateValue(node, fields).valid).toEqual(false);
+});
+
 test('ValidateValueWithFields OK', () => {
   const node = {
     compare: {
