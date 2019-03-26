@@ -29,7 +29,7 @@ evaluator.validator.validate(instance, {})
 
 ### Evaluate the JSON instance
 ```
-jsonEvaluator.evaluate(JSON.parse(instance), {})
+evaluator.evaluate(JSON.parse(instance), {})
 ```
 
 ## How does the JSON work ?

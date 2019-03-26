@@ -282,7 +282,6 @@ test('ValidateValueWithFields KO', () => {
     user: 'oliver',
   };
   expect(validator.validateValue(node, fields).valid).toEqual(false);
-  console.log(validator.validateValue(node, fields))
 });
 
 test('ValidateValueWithFields KO', () => {
@@ -499,7 +498,7 @@ test('ValidateNode 2', () => {
   expect(result.errors.length).toBeGreaterThan(0);
 });
 
-test('Validate', () => {
+test('Validate real case 1', () => {
   const node = {
     compare: {
       type: 'boolean',
@@ -522,11 +521,11 @@ test('Validate', () => {
     operator: '==',
   };
   const result = validator.validate(node);
-  expect(result.valid).toEqual(true);
-  expect(result.errors.length).toStrictEqual(0);
+  expect(result.valid).toEqual(false);
+  expect(result.errors.length).toBeGreaterThan(0);
 });
 
-test('Validate', () => {
+test('Validate real case 2', () => {
   const node = {
     compare: {
       type: 'expression',
@@ -552,3 +551,37 @@ test('Validate', () => {
   expect(result.valid).toEqual(false);
   expect(result.errors.length).toBeGreaterThan(0);
 });
+
+test('Validate real case 3', () => {
+  const node = {
+    operator:"AND",
+    conditions:[
+      {
+        operator:"==",
+        compare:{
+          type:"field",
+          value:"cbxExplanatoryMemorandum"
+        },
+        compareTo:{
+          type:"string",
+          value:"aaa"
+        }
+      },
+      {
+        operator:"",
+        compare:{
+          type:"field",
+          value:""
+        },
+        compareTo:{
+          type:"string",
+          value:""
+        }
+      }
+    ]
+  };
+  const result = validator.validate(node, {});
+  expect(result.valid).toEqual(false);
+  expect(result.errors).toBeGreaterThan(0);
+  console.log(result);
+})

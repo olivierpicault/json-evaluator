@@ -289,6 +289,22 @@ module.exports = {
     };
   },
   validate: function validate(instance, fields) {
+    var _this = this;
+
+    if (instance === null || instance === undefined) {
+      return {
+        valid: false,
+        errors: ['missing "instance" parameter']
+      };
+    }
+
+    if (fields === null || fields === undefined || _typeof(fields) !== 'object') {
+      return {
+        valid: false,
+        errors: ['missing "fields" parameter']
+      };
+    }
+
     var valid = true;
     var errors = [];
     var operationType = this.checkOperationType(instance);
@@ -327,9 +343,21 @@ module.exports = {
       };
     }
 
-    if (operationType === 'multiple') {// Check operator
-      // check conditions is an array
-      // check each item of conditions is an object with certain properties
+    if (operationType === 'multiple') {
+      var multiplePropertiesCheck = this.validateMultipleProperties(instance);
+
+      if (multiplePropertiesCheck.valid === false) {
+        return {
+          valid: multiplePropertiesCheck.valid && valid,
+          errors: [].concat(_toConsumableArray(multiplePropertiesCheck.errors), _toConsumableArray(errors))
+        };
+      }
+
+      instance.conditions.forEach(function (condition) {
+        var result = _this.validateNode(condition, fields);
+
+        valid = valid && result.valid, errors = [].concat(_toConsumableArray(errors), _toConsumableArray(result.errors));
+      });
     }
 
     return {
