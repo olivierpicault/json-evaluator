@@ -354,7 +354,7 @@ module.exports = {
       }
 
       instance.conditions.forEach(function (condition) {
-        var result = _this.validateNode(condition, fields);
+        var result = _this.validate(condition, fields);
 
         valid = valid && result.valid, errors = [].concat(_toConsumableArray(errors), _toConsumableArray(result.errors));
       });

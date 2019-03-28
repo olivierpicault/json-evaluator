@@ -582,6 +582,12 @@ test('Validate real case 3', () => {
   };
   const result = validator.validate(node, {});
   expect(result.valid).toEqual(false);
-  expect(result.errors).toBeGreaterThan(0);
-  console.log(result);
+  expect(result.errors.length).toBeGreaterThan(0);
 })
+
+test('Validate real case 4', () => {
+  const node = {"operator":"AND","conditions":[{"operator":"AND","conditions":[{"operator":"==","compare":{"type":"field","value":"cbxClientGuide"},"compareTo":{"type":"string","value":"a"}},{"operator":"","compare":{"type":"field","value":""},"compareTo":{"type":"string","value":""}}]},{"operator":"==","compare":{"type":"field","value":"cbxBoardResolution"},"compareTo":{"type":"string","value":"arn"}}]};
+  const result = validator.validate(node, {cbxClientGuide: '', cbxBoardResolution: ''});
+  expect(result.valid).toEqual(false);
+  expect(result.errors.length).toEqual(2);
+});
