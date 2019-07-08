@@ -23,7 +23,7 @@
     ]
   },
   "scripts": {
-    "tests": "jest"
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7.3.4",

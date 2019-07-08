@@ -179,7 +179,7 @@ This will produce (bool) false because:
 # Run de tests
 
 ```
-yarn tests tests/
+yarn test tests/
 ```
 
 ## Generate `dist` files

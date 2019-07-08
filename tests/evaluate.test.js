@@ -355,3 +355,35 @@ test('Evaluate 2', () => {
 
   expect(evaluate.evaluate(instance)).toEqual(true);
 });
+
+test('Evaluate 3', () => {
+  const instance = {
+    conditions: [
+      {
+        compare: {
+          type: 'string',
+          value: 'olivier'
+        },
+        compareTo: {
+          type: 'string',
+          value: 'arnaud'
+        },
+        operator: '!='
+      },
+      {
+        compare: {
+          type: 'string',
+          value: 'olivier'
+        },
+        compareTo: {
+          type: 'string',
+          value: 'olivier'
+        },
+        operator: '!='
+      }
+    ],
+    operator: 'or'
+  }
+
+  expect(evaluate.evaluate(instance)).toEqual(true);
+});

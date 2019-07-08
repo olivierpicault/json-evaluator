@@ -112,15 +112,27 @@ module.exports = {
     var result = undefined;
     var operator = instance.operator.toLowerCase();
     instance.conditions.forEach(function (condition) {
+      // If the condition is a multiple as well
       if (Object.prototype.hasOwnProperty.call(condition, 'conditions') && operator === ('and' || '&&')) {
         if (result === undefined) {
-          result = _this.evaluateSingle(condition, fields);
+          /*
+          We need to check if the value is undefined because:
+          - undefined && true === undefined
+          - undefined && false === undefined
+          */
+          result = _this.evaluateMultiple(condition, fields);
         } else {
-          result = result && _this.evaluateSingle(condition, fields);
+          /*
+          No need to check if the value is undefined here because:
+          - undefined || true === true
+          - undefined || false === false
+          */
+          result = result && _this.evaluateMultiple(condition, fields);
         }
       } else if (Object.prototype.hasOwnProperty.call(condition, 'conditions') && operator === ('or' || '||')) {
         result = result || _this.evaluateMultiple(condition, fields);
-      }
+      } // The condition is a simple one
+
 
       if (!Object.prototype.hasOwnProperty.call(condition, 'conditions') && operator === ('and' || '&&')) {
         if (result === undefined) {
