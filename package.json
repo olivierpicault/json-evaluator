@@ -15,14 +15,16 @@
   "author": "Olivier Picault <olivier.picault@gmail.com>",
   "bugs": "https://github.com/olivierpicault/json-evaluator/issues",
   "scripts": {
-    "build": "yarn test && ./node_modules/.bin/babel lib/ --out-dir dist/",
-    "test": "jest"
+    "build": "yarn test && ./node_modules/.bin/babel lib/ --out-dir dist/ && yarn uglify",
+    "test": "jest",
+    "uglify": "uglifyjs dist/validate.js --output dist/validate.js && uglifyjs dist/evaluate.js --output dist/evaluate.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.7.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
-    "jest-cli": "^24.1.0"
+    "jest-cli": "^24.1.0",
+    "uglify-js": "^3.6.9"
   }
 }
