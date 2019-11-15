@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -12,7 +17,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 var allowedTypes = ['string', 'number', 'boolean', 'expression', 'field'];
 var allowedMultipleOperators = ['and', 'or', '||', '&&'];
-module.exports = {
+var _default = {
   /*
   **
   */
@@ -226,11 +231,10 @@ module.exports = {
     var allowedOperatorsByType = {
       string: ['==', '!='],
       number: ['==', '!=', '>', '>=', '<', '<='],
-      boolean: ['==', '!=', '&&', '||', 'and', 'or'],
+      "boolean": ['==', '!=', '&&', '||', 'and', 'or'],
       expression: ['==', '!=', '&&', '||', 'and', 'or'],
-      field: [] // "flatten" all the arrays within 'allowedOperatorsByType' ...
-
-    };
+      field: []
+    }; // "flatten" all the arrays within 'allowedOperatorsByType' ...
 
     var operators = (_ref = []).concat.apply(_ref, _toConsumableArray(Object.values(allowedOperatorsByType))); // ... and remove duplicates
 
@@ -366,3 +370,4 @@ module.exports = {
     };
   }
 };
+exports["default"] = _default;

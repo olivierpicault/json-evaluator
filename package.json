@@ -14,23 +14,15 @@
   "main": "index.js",
   "author": "Olivier Picault <olivier.picault@gmail.com>",
   "bugs": "https://github.com/olivierpicault/json-evaluator/issues",
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ],
-    "plugins": [
-      "@babel/plugin-proposal-object-rest-spread"
-    ]
-  },
   "scripts": {
+    "build": "yarn test && ./node_modules/.bin/babel lib/ --out-dir dist/",
     "test": "jest"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
-    "jest-cli": "^24.1.0"
-  },
-  "dependencies": {
     "@babel/cli": "^7.2.3",
-    "@babel/preset-env": "^7.3.4"
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "jest-cli": "^24.1.0"
   }
 }
