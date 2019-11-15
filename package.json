@@ -1,6 +1,6 @@
 {
   "name": "json-evaluator",
-  "version": "0.0.13-beta",
+  "version": "0.0.14",
   "keywords": [
     "json",
     "valuator",
@@ -23,6 +23,7 @@
     ]
   },
   "scripts": {
+    "build": "yarn test && ./node_modules/.bin/babel lib/ --out-dir dist/",
     "test": "jest"
   },
   "devDependencies": {

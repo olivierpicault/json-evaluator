@@ -2,7 +2,7 @@
 
 var _validate = _interopRequireDefault(require("./validate"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 module.exports = {
   /*
@@ -151,7 +151,7 @@ module.exports = {
   **  Evaluate main function
   */
   evaluate: function evaluate(instance, fields) {
-    var type = _validate.default.checkOperationType(instance);
+    var type = _validate["default"].checkOperationType(instance);
 
     if (type === 'single') {
       return this.evaluateSingle(instance, fields);

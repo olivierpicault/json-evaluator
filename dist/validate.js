@@ -226,11 +226,10 @@ module.exports = {
     var allowedOperatorsByType = {
       string: ['==', '!='],
       number: ['==', '!=', '>', '>=', '<', '<='],
-      boolean: ['==', '!=', '&&', '||', 'and', 'or'],
+      "boolean": ['==', '!=', '&&', '||', 'and', 'or'],
       expression: ['==', '!=', '&&', '||', 'and', 'or'],
-      field: [] // "flatten" all the arrays within 'allowedOperatorsByType' ...
-
-    };
+      field: []
+    }; // "flatten" all the arrays within 'allowedOperatorsByType' ...
 
     var operators = (_ref = []).concat.apply(_ref, _toConsumableArray(Object.values(allowedOperatorsByType))); // ... and remove duplicates
 
